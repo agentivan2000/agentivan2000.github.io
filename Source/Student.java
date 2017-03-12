@@ -28,9 +28,11 @@ public class Student {
 		userName = registrationDetails[5];
 		password = registrationDetails[6].hashCode() * registrationDetails[5].hashCode();
 		
-		String[] students_details = {registrationDetails[0],registrationDetails[1],registrationDetails[2],registrationDetails[3],registrationDetails[4]};
+		String[] students_details = {this.studentId,this.firstName,this.middleName,this.lastName,this.dateOfBirth};
 		saveDetails(students_details,"students_details.txt");
-		
+			
+		String[] authentication_details = {this.userName,this.password + "",this.studentId};
+		saveDetails(authentication_details,"authentication.txt");
 	}
 
 	public void setStudent(String id, String fn, String mn, String ln, String dob) {
@@ -64,16 +66,18 @@ public class Student {
 	public boolean authentication(String user, String pass) {
 
 		try {
-			int login = user.hashCode() * pass.hashCode();
-			Scanner scan = new Scanner(new File("File.txt"));
+			int loginhash = user.hashCode() * pass.hashCode();
+			String login = loginhash+"";
+			
+			Scanner scan = new Scanner(new File("authentication.txt"));
 			boolean stoploop = false;
 
 			do {
-				int inline = scan.nextInt();
-
-				if (login == inline) {
+				String[] inline = scan.nextLine().split(",");
+				
+				if (login.equals(inline[1])) {
+					setStudentDetails(userName,login);
 					authenticated = true;
-					setStudentDetails(userName);
 					stoploop = true;
 				}
 
@@ -86,16 +90,31 @@ public class Student {
 		return authenticated;
 	}
 
-	private void setStudentDetails(String user) {
+	private void setStudentDetails(String user, String login) {
 		try {
+			File student_auth = new File("authentication.txt");
+			Scanner scanner1 = new Scanner(student_auth);
+
+			boolean end_loop1 = false;
+
+			while (scanner1.hasNext() && end_loop1 == false) {
+				String input_list = scanner1.nextLine();
+				if (input_list.contains(user) && input_list.contains(login)) {
+					String[] student_auth_array = input_list.split(",");
+					studentId = student_auth_array[2];
+					end_loop1 = true;
+				}
+			}
+			scanner1.close();
+			
 			File student_details = new File("students_details.txt");
 			Scanner scanner = new Scanner(student_details);
-
+			
 			boolean end_loop = false;
 
 			while (scanner.hasNext() && end_loop == false) {
 				String input_list = scanner.nextLine();
-				if (input_list.contains(user)) {
+				if (input_list.contains(user) && input_list.contains(studentId)) {
 					String[] student_records = input_list.split(",");
 
 					studentId = student_records[1];
@@ -103,6 +122,7 @@ public class Student {
 					middleName = student_records[3];
 					lastName = student_records[4];
 					dateOfBirth = student_records[5];
+					end_loop = true;
 				}
 			}
 			scanner.close();
