@@ -19,28 +19,47 @@ public class Student {
 		userName = user;
 	}
 
-	public void signUp(String[] registrationDetails) throws Exception{
-		studentId = registrationDetails[0];
-		firstName = registrationDetails[1];
-		middleName = registrationDetails[2];
-		lastName = registrationDetails[3];
-		dateOfBirth = registrationDetails[4];
-		userName = registrationDetails[5];
-		password = registrationDetails[6].hashCode() * registrationDetails[5].hashCode();
-		
-		String[] students_details = {this.studentId,this.firstName,this.middleName,this.lastName,this.dateOfBirth};
-		saveDetails(students_details,"students_details.txt");
-			
-		String[] authentication_details = {this.userName,this.password + "",this.studentId};
-		saveDetails(authentication_details,"authentication.txt");
-	}
+	public boolean signUp(String[] registrationDetails) throws Exception{
+		//		Check if student is already registered. 
+		try 
+		{
+			File student_details = new File("students_details.txt");
+			Scanner scann = new Scanner(student_details);
 
-	public void setStudent(String id, String fn, String mn, String ln, String dob) {
-		studentId = id;
-		firstName = fn;
-		middleName = mn;
-		lastName = ln;
-		dateOfBirth = dob;
+			boolean end_loop = false;
+
+			while (scann.hasNext() && end_loop == false) {
+				String input_list = scann.nextLine();
+
+				//check if the studentId
+				if (input_list.contains(registrationDetails[1])) {
+					scann.close();
+					return false;
+				}
+			}
+			scann.close();
+
+			//If new student. Set the student details 
+
+			studentId = registrationDetails[1];
+			firstName = registrationDetails[2];
+			middleName = registrationDetails[3];
+			lastName = registrationDetails[4];
+			dateOfBirth = registrationDetails[5];
+			userName = registrationDetails[0];
+			password = registrationDetails[6].hashCode() * registrationDetails[0].hashCode();
+
+			// save details in the students file and the authentication file
+			String[] students_details = {this.studentId,this.firstName,this.middleName,this.lastName,this.dateOfBirth};
+			saveDetails(students_details,"students_details.txt");
+
+			String[] authentication_details = {this.userName,this.password + "",this.studentId};
+			saveDetails(authentication_details,"authentication.txt");
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return true;
 	}
 
 	public String getStudentId() {
@@ -68,13 +87,13 @@ public class Student {
 		try {
 			int loginhash = user.hashCode() * pass.hashCode();
 			String login = loginhash+"";
-			
+
 			Scanner scan = new Scanner(new File("authentication.txt"));
 			boolean stoploop = false;
 
 			do {
 				String[] inline = scan.nextLine().split(",");
-				
+
 				if (login.equals(inline[1])) {
 					setStudentDetails(userName,login);
 					authenticated = true;
@@ -106,10 +125,10 @@ public class Student {
 				}
 			}
 			scanner1.close();
-			
+
 			File student_details = new File("students_details.txt");
 			Scanner scanner = new Scanner(student_details);
-			
+
 			boolean end_loop = false;
 
 			while (scanner.hasNext() && end_loop == false) {
@@ -135,7 +154,7 @@ public class Student {
 			String fileName ) {
 		try {
 			String[] possibleFileNames = { "students_details.txt", "authentication.txt", "availableCourses.txt",
-					"coursesRegisteredFor.txt" };
+			"coursesRegisteredFor.txt" };
 
 			if (Arrays.asList(possibleFileNames).contains(fileName)) {
 				File student_details = new File(fileName);

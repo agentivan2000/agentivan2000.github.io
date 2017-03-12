@@ -1,0 +1,3 @@
+courseID,CourseName,NumberOfStudentsRegistered,Max_Students,CanRegister
+2017X01,Java Programming I,12,30,true
+2017X02,Java Programming II,30,30,false

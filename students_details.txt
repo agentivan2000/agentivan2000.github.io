@@ -1,1 +1,2 @@
-imwanja,281,Ivan,,Mwanja,08/28/1983
+userName,studentID,FirstName,MiddleName,LastName,Dob
+imwanja,281,Ivan,,Mwanja,01/01/1987
