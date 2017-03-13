@@ -4,11 +4,16 @@ import java.util.*;
 
 public class Course extends Student{
 	//private String courseId;
+	private String studentId;
 
 	public Course() {
 	}
+	
+	public Course(Student std) {
+		studentId = std.getStudentId();
+	}
 
-	public int unRegister(String courseId, String studentId) throws IOException{
+	public int unRegister(String courseId) throws IOException{
 		//Check if student is already registered for the course
 		//File Format: studentID,courseID,CourseName
 
@@ -108,7 +113,7 @@ public class Course extends Student{
 		}
 		return 0;
 	}
-	public int register(String courseId,String studentId) throws IOException {
+	public int register(String courseId) throws IOException {
 
 		//Check if the course is full
 		//File Format: courseID,CourseName,NumberOfStudentsRegistered,Max_Students,CanRegister

@@ -1,3 +1,11 @@
 courseID,CourseName,NumberOfStudentsRegistered,Max_Students,CanRegister
-2017X01,Java Programming I,12,30,true
+2017X01,Java Programming I,14,30,true
 2017X02,Java Programming II,30,30,false
+2017Y01,Physics I,0,30,true
+2017Y02,Physics II,0,30,true
+2017J01,Fundamentals of Graphics Design,0,30,true
+2017Q01,Introduction to Buffoonery,0,15,true
+2017Q02,Advanced Buffoonery,0,15,true
+2017P03,Earth Science I,0,15,true
+2017Z02,Introduction to the Walking Dead,45,45,false
+2017Z03,Advanced Walking Dead,15,25,true
