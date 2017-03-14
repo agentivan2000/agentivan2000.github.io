@@ -18,7 +18,18 @@ public class Student {
 	public Student(String user) {
 		userName = user;
 	}
-
+	
+	public void setToNull() {
+		studentId = null;
+		firstName = null;
+		middleName = null;
+		lastName = null;
+		dateOfBirth = null;
+		userName = null;
+		password = 0;
+		authenticated = false;
+	}
+	
 	public boolean signUp(String[] registrationDetails) throws Exception{
 		//		Check if student is already registered. 
 		try 
@@ -50,7 +61,7 @@ public class Student {
 			password = registrationDetails[6].hashCode() * registrationDetails[0].hashCode();
 
 			// save details in the students file and the authentication file
-			String[] students_details = {this.studentId,this.firstName,this.middleName,this.lastName,this.dateOfBirth};
+			String[] students_details = {this.userName,this.studentId,this.firstName,this.middleName,this.lastName,this.dateOfBirth};
 			saveDetails(students_details,"students_details.txt");
 
 			String[] authentication_details = {this.userName,this.password + "",this.studentId};

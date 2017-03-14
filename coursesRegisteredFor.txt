@@ -1,4 +1,14 @@
 studentID,courseID,CourseName
-281,2017X02,Java Programming II
+281,2017Y02,Physics II
+281,2017P03,Earth Science I
+281,2017Q01,Introduction to Buffoonery
 281,2017X01,Java Programming I
-283,2017X01,Java Programming I
+281,2017Q02,Advanced Buffoonery
+281,2017Z03,Advanced Walking Dead
+281,2017J01,Fundamentals of Graphics Design
+231,2017Q02,Advanced Buffoonery
+456,2017Q02,Advanced Buffoonery
+456,2017X01,Java Programming I
+456,2017Q01,Introduction to Buffoonery
+456,2017Y02,Physics II
+456,2017Y01,Physics I

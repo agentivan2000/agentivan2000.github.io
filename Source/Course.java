@@ -8,9 +8,30 @@ public class Course extends Student{
 
 	public Course() {
 	}
-	
+
 	public Course(Student std) {
 		studentId = std.getStudentId();
+	}
+
+	public int unRegisterByCourseName(String courseName) throws IOException{
+
+		File courseFile2 = new File("coursesRegisteredFor.txt");
+		if (!courseFile2.exists()) {
+			throw new IOException();
+		} else {
+			Scanner c = new Scanner(courseFile2);
+
+			while (c.hasNext()) {
+				String[] input_list = c.nextLine().split(",");
+				//check if the studentId
+				if ((input_list[0].equals(studentId) && input_list[2].equals(courseName.trim()))) {
+					c.close();
+					String courseId = input_list[1];
+					return unRegister(courseId.trim());
+				}
+			}
+			c.close();
+			return -1;}
 	}
 
 	public int unRegister(String courseId) throws IOException{
@@ -23,17 +44,24 @@ public class Course extends Student{
 			throw new IOException();
 		} else {
 			Scanner c = new Scanner(courseFile2);
+			boolean courseFound = false;
 
 			while (c.hasNext()) {
 				String[] input_list = c.nextLine().split(",");
 
 				//check if the studentId
-				if (!(input_list[0].equals(studentId) && input_list[1].equals(courseId))) {
-					c.close();
-					return 1; // Not registered for the course
+				if (input_list[0].equals(studentId)) {
+					if(input_list[1].equals(courseId)) {
+						c.close();
+						courseFound = true;
+						break;
+					}
 				}
 			}
 			c.close();
+			if(!courseFound) {
+				return 1; // Not registered for the course
+			}	
 		}
 
 
@@ -85,10 +113,13 @@ public class Course extends Student{
 
 				if (input_list.contains(courseId)) {
 					String[] input_list2 = input_list.split(",");
-
+					
+					int new_student_cnt = 0;
 					//Decrement the number of registered students for the course
-					int new_student_cnt = Integer.parseInt(input_list2[2]) - 1; 
-
+					if (!(new_student_cnt == 0)) {
+						new_student_cnt = Integer.parseInt(input_list2[2]) - 1;
+					}
+					 
 					String new_student_cnt_st = new_student_cnt+"";
 					//input_list.replaceAll(text1,text2);
 					String output_list = input_list2[0]+","+input_list2[1]+","+new_student_cnt_st+
@@ -113,6 +144,28 @@ public class Course extends Student{
 		}
 		return 0;
 	}
+
+	public int registerByCourseName(String courseName) throws IOException {
+		File courseFile = new File("coursesAvailable.txt");
+		if (!courseFile.exists()) {
+			throw new IOException();
+		} else {
+			Scanner scann = new Scanner(courseFile);
+
+			while (scann.hasNext()) {
+				String[] input_list = scann.nextLine().split(",");
+
+				if (input_list[1].equals(courseName)) {
+					String courseId = input_list[0];
+					scann.close();
+					return this.register(courseId);
+				}
+			}
+			scann.close();
+		}
+		return -1;
+	}
+
 	public int register(String courseId) throws IOException {
 
 		//Check if the course is full
@@ -177,9 +230,11 @@ public class Course extends Student{
 
 				if (input_list2[0].equals(courseId)) {
 					courseName = input_list2[1];
-
+					int new_student_cnt = 0;
 					//Increment the number of registered students for the course
-					int new_student_cnt = Integer.parseInt(input_list2[2]) + 1; 
+					if (!(new_student_cnt == Integer.parseInt(input_list2[3]))) {
+						new_student_cnt = Integer.parseInt(input_list2[2]) + 1;
+					}
 
 					if(new_student_cnt == Integer.parseInt(input_list2[3])) {
 						CanRegister = false;
@@ -248,11 +303,47 @@ public class Course extends Student{
 			String[] input_list = scann.nextLine().split(",");
 
 			//check if the studentId
-			if (input_list[0].equals(super.getStudentId())) {
+			if (input_list[0].equals(studentId)) {
 				studentCourseDetails.add(input_list[2]); //Add the course name to an arraylist
 			}
 		}
 		scann.close();
+		Collections.sort(studentCourseDetails);
+
 		return studentCourseDetails;
+	}
+
+	public ArrayList<String> availableCourses() throws IOException {
+
+		File courseFile = new File("coursesAvailable.txt");
+		ArrayList<String> availableCourseDetails = new ArrayList<String>();
+
+		if (!courseFile.exists()) {
+			throw new IOException();
+		} else {
+			Scanner scann = new Scanner(courseFile);
+
+			while (scann.hasNext()) {
+				String[] input_list = scann.nextLine().split(",");
+				String list2 ;
+
+				if (input_list[2].equals("NumberOfStudentsRegistered")){
+					continue;
+				}
+
+				if(Integer.parseInt(input_list[2]) >= Integer.parseInt(input_list[3])) {
+					list2 = input_list[1] + " - Full"; 
+				} else {
+					int availableSeats = Integer.parseInt(input_list[3]) - Integer.parseInt(input_list[2]);
+					list2 = input_list[1] + " - Available Seats: "+availableSeats;
+				}
+
+				availableCourseDetails.add(list2);
+			}
+			scann.close();
+			Collections.sort(availableCourseDetails);
+
+			return availableCourseDetails;
+		}	
 	}
 }
