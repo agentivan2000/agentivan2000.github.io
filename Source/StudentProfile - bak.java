@@ -1,53 +1,19 @@
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.List;
-import java.awt.TextField;
-import java.awt.event.ActionEvent;
+import java.awt.*;
+import javax.swing.*;
+
 import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class StudentProfile {
 
 	protected JFrame studentProfileFrame;
 	private List availableCourses;
 	private List registeredCourses;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Student student = new Student();
-					Course course =new Course();
-
-					StudentProfile window = new StudentProfile(student,course);
-					window.studentProfileFrame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
+	
+	
 	public StudentProfile(final Student student,final Course course) {
-		initialize(student,course);
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize(final Student student,final Course course) {
 		studentProfileFrame = new JFrame();
 		studentProfileFrame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
 		studentProfileFrame.setTitle("TeamD: Course Registration System");
@@ -109,7 +75,7 @@ public class StudentProfile {
 		panel.add(studentId);
 
 		JLabel lblStudentDetails = new JLabel("Student Details");
-		lblStudentDetails.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblStudentDetails.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblStudentDetails.setBounds(10, 11, 200, 29);
 		studentProfileFrame.getContentPane().add(lblStudentDetails);
 
@@ -159,12 +125,12 @@ public class StudentProfile {
 
 		JLabel lblRegisteredCourses = new JLabel("Registered Courses");
 		lblRegisteredCourses.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblRegisteredCourses.setBounds(20, 221, 174, 29);
+		lblRegisteredCourses.setBounds(20, 221, 278, 29);
 		studentProfileFrame.getContentPane().add(lblRegisteredCourses);
 
 		availableCourses = new List();
 		availableCourses.setMultipleSelections(false);
-		availableCourses.setBounds(437, 104, 301, 312);
+		availableCourses.setBounds(437, 79, 301, 337);
 		refreshAvailableCourses(availableCourses,course);
 
 		final JButton btnRegister = new JButton("Register");
@@ -201,59 +167,8 @@ public class StudentProfile {
 				}
 			}
 		});
-		btnRegister.setBounds(437, 75, 151, 23);
+		btnRegister.setBounds(438, 50, 151, 23);
 		studentProfileFrame.getContentPane().add(btnRegister);
-
-		JButton btnViewCoursesDetails = new JButton("View Details");
-		btnViewCoursesDetails.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try
-				{
-					String[] x_text = availableCourses.getSelectedItem().split("-");
-					String courseName = x_text[0].trim();
-
-					if(availableCourses.getSelectedItem().length() < 1){
-						JOptionPane.showMessageDialog(null,"Please select a course to view the details.");
-					}else{
-						ViewCourseDetails window = new ViewCourseDetails(course,courseName.trim());
-						window.viewCourseDetails.setVisible(true);
-					}
-				}
-				catch(Exception ex)
-				{
-					ex.printStackTrace();
-				}
-			}
-		});
-		btnViewCoursesDetails.setBounds(599, 75, 139, 23);
-		studentProfileFrame.getContentPane().add(btnViewCoursesDetails);
-
-		JButton btnViewRegisteredDetails = new JButton("View Details");
-		btnViewRegisteredDetails.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try
-				{
-					String courseName = registeredCourses.getSelectedItem();
-					if(courseName.length() < 1){
-						JOptionPane.showMessageDialog(null,"Please select a course to view the details.");
-					}else{
-						ViewCourseDetails window = new ViewCourseDetails(course,courseName.trim());
-						window.viewCourseDetails.setVisible(true);
-					}
-				}
-				catch(Exception ex)
-				{
-					ex.printStackTrace();
-				}
-			}
-		});
-		btnViewRegisteredDetails.setBounds(164, 227, 134, 23);
-		studentProfileFrame.getContentPane().add(btnViewRegisteredDetails);
-
-		JLabel lblAllCoursesOffered = new JLabel("All Courses Offered");
-		lblAllCoursesOffered.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblAllCoursesOffered.setBounds(440, 41, 298, 23);
-		studentProfileFrame.getContentPane().add(lblAllCoursesOffered);
 	}
 
 	public void refreshAvailableCourses(List list,Course course)
@@ -292,5 +207,3 @@ public class StudentProfile {
 		studentProfileFrame.getContentPane().add(list);
 	}
 }
-
-

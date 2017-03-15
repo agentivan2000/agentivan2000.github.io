@@ -113,17 +113,17 @@ public class Course extends Student{
 
 				if (input_list.contains(courseId)) {
 					String[] input_list2 = input_list.split(",");
-					
+
 					int new_student_cnt = 0;
 					//Decrement the number of registered students for the course
 					if (!(new_student_cnt == 0)) {
 						new_student_cnt = Integer.parseInt(input_list2[2]) - 1;
 					}
-					 
+
 					String new_student_cnt_st = new_student_cnt+"";
 					//input_list.replaceAll(text1,text2);
 					String output_list = input_list2[0]+","+input_list2[1]+","+new_student_cnt_st+
-							","+input_list2[3]+","+"true";
+							","+input_list2[3]+","+"true"+","+input_list2[5]+","+input_list2[6]+","+input_list2[7];
 					input_list = output_list;
 				}
 				pw2.println(input_list);
@@ -214,6 +214,9 @@ public class Course extends Student{
 
 		File c_all_file = new File("coursesAvailable.txt");
 		String courseName = null;
+		String startDate = null;
+		String endDate = null;
+		String description = null;
 
 		if (!c_all_file.exists()) {
 			throw new IOException();
@@ -230,9 +233,12 @@ public class Course extends Student{
 
 				if (input_list2[0].equals(courseId)) {
 					courseName = input_list2[1];
+					startDate = input_list2[5];	
+					endDate = input_list2[6];
+					description = input_list2[7];
 					int new_student_cnt = 0;
 					//Increment the number of registered students for the course
-					if (!(new_student_cnt == Integer.parseInt(input_list2[3]))) {
+					if (!(new_student_cnt >= Integer.parseInt(input_list2[3]))) {
 						new_student_cnt = Integer.parseInt(input_list2[2]) + 1;
 					}
 
@@ -243,7 +249,7 @@ public class Course extends Student{
 					String new_student_cnt_st = new_student_cnt+"";
 					//input_list.replaceAll(text1,text2);
 					String output_list = input_list2[0]+","+input_list2[1]+","+new_student_cnt_st+
-							","+input_list2[3]+","+CanRegister;
+							","+input_list2[3]+","+CanRegister+","+input_list2[5]+","+input_list2[6]+","+input_list2[7]; 
 					input_list = output_list;
 				}
 				pw.println(input_list);
@@ -271,7 +277,7 @@ public class Course extends Student{
 
 		//String studentId = this.getStudentId();
 
-		String[] courseRegistered = {studentId,courseId,courseName};
+		String[] courseRegistered = {studentId,courseId,courseName,startDate,endDate,description};
 
 		// Append records to an existing file rather than overwrite it.
 		FileWriter fw = new FileWriter(c_file, true);
@@ -344,6 +350,29 @@ public class Course extends Student{
 			Collections.sort(availableCourseDetails);
 
 			return availableCourseDetails;
+		}
+	}
+	public ArrayList<String> courseDetails(String courseName) throws IOException {
+
+		File courseFile = new File("coursesAvailable.txt");
+		ArrayList<String> courseDetails = new ArrayList<String>();
+
+		if (!courseFile.exists()) {
+			throw new IOException();
+		} else if (courseName.isEmpty()){
+			throw new IOException();
+		} else {
+			Scanner scann = new Scanner(courseFile);
+
+			while (scann.hasNext()) {
+
+				String list = scann.nextLine();
+				if (list.contains(courseName.trim())) {
+					courseDetails.addAll(Arrays.asList(list.split(",")));
+				}
+			}
+			scann.close();
+			return courseDetails;
 		}	
 	}
 }

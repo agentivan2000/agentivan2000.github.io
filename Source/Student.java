@@ -36,6 +36,10 @@ public class Student {
 		{
 			File student_details = new File("students_details.txt");
 			Scanner scann = new Scanner(student_details);
+			
+			if (!(student_details.exists())){
+				student_details.createNewFile();
+			}
 
 			boolean end_loop = false;
 
